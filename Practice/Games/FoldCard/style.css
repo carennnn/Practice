@@ -1,0 +1,55 @@
+* {
+    font-family:Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.card{
+    color: rgb(73, 73, 73);
+    width: 300px;
+    margin: 20px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgb(211, 211, 211);
+    justify-content: space-between;
+}
+.time{
+    text-align:center;
+}
+.font-600{
+    font-weight: 600;
+}
+.font-400{
+    font-weight: normal;
+}
+.line{
+    width: 1px;
+    height: 100%;
+    background-color: rgb(211, 211, 211);
+    margin: 0 8px;
+}
+.flex{
+    display: flex;
+}
+.detail{
+    font-size: 12px;
+    margin-top: 8px;
+    color: rgb(124, 124, 124);
+    max-height: 0;      /* 必須要有高度才會有動畫效果 */
+    overflow: hidden;
+    transition: max-height 0.5s ease ;  
+}
+.align-end{
+    text-align: end;   
+}
+.align-start{
+    text-align: start;   
+}
+.mg-left-8{
+    margin-left: 8px;
+}
+.mg-right-8{
+    margin-right: 8px;
+}
+.detailShow{
+    max-height: 50px;
+}
+

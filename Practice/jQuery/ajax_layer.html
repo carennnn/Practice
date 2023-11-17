@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="jquery-3.6.0.js"></script>
+    <title>Document</title>
+  </head>
+  <header></header>
+  <body>
+    <div class="info"></div>
+    <button id="btn">點我</button>
+  </body>
+  <script>
+    function showList() {
+      // $.get("api.php", function (data, status) {
+      //   alert(data + status);
+      // });
+      // $(".info").load(
+      //   "https://jsonplaceholder.typicode.com/photos/1",
+      //   function (responseTxt, statusTxt, xhr) {
+      //     if (statusTxt == "success") {
+      //       console.log("內容加載成功");
+      //     }
+      //     if (statusTxt == "error") {
+      //       console.log("Error:" + xhr.status + ":" + xhr.statusTxt);
+      //     }
+      //     $("");
+      //   }
+      // );
+      //   $.get("https://ruienyuski.github.io/git_test/data.json", function (data) {
+      //     $.each(data, function (index, value) {
+      //       $(".info").append(
+      //         $("<li>", { text: [index + 1] + "." + "名稱：" + value.place }),
+      //         $("<li>", {
+      //           text: [index + 1] + "." + "地址：" + value.address,
+      //         }),
+      //         $("<p>")
+      //       );
+      //     });
+      //   });
+      $.get("https://jsonplaceholder.typicode.com/photos", function (data) {
+        $.each(data, function (index, value) {
+          $(".info").append(
+            $("<ul>", { text: [index] + "：" + value.title, class: "title" }),
+            $("<ul>", { text: [index] + "：" + value.thumbnailUrl }).append(
+              $("<li>", { text: "品質最好" }),
+              $("<li>", { text: "價格最便" })
+            ),
+            $("<img>", { src: value.thumbnailUrl }),
+            $("<p>")
+          );
+        });
+      });
+    }
+
+    $("#btn").click(showList);
+  </script>
+</html>

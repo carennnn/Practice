@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="style_ajax.css" type="text/css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div>
+          <ul>
+            <li class="logo"><a href="">二手小舖</a></li>
+            <li class="link"><a href="">最新活動</a></li>
+            <li class="link"><a href="">商品分類</a></li>
+            <li class="link"><a href="">關於我們 </a></li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li><input class="search" type="text" placeholder="查詢" /></li>
+            <li><a href="">購物車</a></li>
+            <li><a href="">登入</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div id="container">
+      <div class="product">
+        <img class="pic" src="https://via.placeholder.com/150/92c952" alt="" />
+        <div class="productName productInfo">
+          accusamus beatae ad facilis cum similique qui sunt
+        </div>
+        <div class="price productInfo">$0</div>
+        <!-- <div class="tag sale">特價</div>
+        <div class="tag hot">熱銷</div>
+        <div class="tag new">新品</div> -->
+      </div>
+    </div>
+    <footer></footer>
+  </body>
+  <script>
+    function showList() {
+      $.get("https://jsonplaceholder.typicode.com/photos", function (data) {
+        $.each(data, function (idx, value) {
+          if (idx < 10) {
+            $("#container").append(
+              '<div class="product" ><img class="pic" src="' +
+                value.thumbnailUrl +
+                '" /><div class="productName productInfo">' +
+                value.title +
+                '</div><div class="price productInfo"> $' +
+                value.id +
+                "</div></div>"
+            );
+          } else {
+            return false;
+          }
+        });
+      });
+      // $.get("https://jsonplaceholder.typicode.com/photos", function (data) {
+      //   $.each(data, function (idx, value) {
+      //     $(".pic").attr("src", value.thumbnailUrl);
+      //     $(".productName").text(value.title);
+      //     $(".price").text("$" + value.id);
+      //   });
+      // });
+    }
+    showList();
+    // 因append是在文件載入完成後才開始新增。故不會套用點擊事件$('product').click()無效，改將事件綁在document上可以解決此問題
+    $(document).on("click", ".product", function () {});
+  </script>
+</html>

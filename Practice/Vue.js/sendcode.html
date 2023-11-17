@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .ret_icon-email {
+      background: url(../../assets/pics/email.svg) no-repeat;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 12px;
+      left: 16px;
+    }
+    .input_email0 {
+      border: 2px solid rgba(239, 83, 80, 1);
+    }
+    #inputEmail {
+      height: 36px;
+      text-indent: 16px;
+      margin-right: 12px;
+    }
+    .btn_number {
+      width: 154px;
+      height: 44px;
+      border-radius: 4px;
+      box-sizing: border-box;
+      border: 1px solid rgba(76, 175, 1);
+      line-height: 16px;
+      outline: none;
+    }
+
+    .span_number {
+      color: rgba(76, 1);
+    }
+    .btn_number.gray {
+      background: rgba(242, 244, 245, 1);
+      border: 1px solid rgba(0, 0.05);
+    }
+    .span_number.gray_span {
+      color: #9a9c9a;
+    }
+    .num_green.num {
+      color: rgba(76, 1);
+    }
+  </style>
+  <body>
+    <div id="body">
+      <div v-bind:class="{ 'text_email': isActive,'text_tip': isTip }">
+        {{tip}}
+      </div>
+      <div class="input">
+        <i class="ret_icon-email"></i>
+        <input
+          type="text"
+          v-model="email"
+          v-bind:class="{ 'input_email0' : hasError }"
+          v-on:click="cancelError"
+          placeholder="輸入郵箱地址"
+          id="inputEmail"
+        />
+
+        <button
+          class="btn_number"
+          v-bind:class="{gray:wait_timer>0}"
+          @click="getCode()"
+        >
+          <span
+            class="num_green"
+            v-show="showNum"
+            v-bind:class="{num:wait_timer>0}"
+            >{{this.wait_timer + "s "}}</span
+          ><span class="span_number" v-bind:class="{gray_span:wait_timer>0}"
+            >{{ getCodeText() }}</span
+          >
+        </button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+      var web = new Vue({
+        el: "#body",
+        data() {
+          return {
+            tip: "用Email找回密碼",
+            isTip: false,
+            isActive: true,
+            showNum: false,
+            wait_timer: false,
+            hasError: false,
+            email: "",
+          };
+        },
+        methods: {
+          cancelError: function (event) {
+            this.hasError = false;
+            this.isActive = true;
+            this.isTip = false;
+            this.tip = "用Email找回密碼";
+          },
+          getCode: function () {
+            if (this.wait_timer > 0) {
+              return false;
+            }
+            if (!this.email) {
+              this.hasError = true;
+              this.isActive = false;
+              this.isTip = true;
+              this.tip = "Email不能為空";
+              return false;
+            }
+            if (
+              !/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(
+                this.email
+              )
+            ) {
+              this.hasError = true;
+              this.isActive = false;
+              this.isTip = true;
+              this.tip = "Email地址無效";
+              return false;
+            }
+            this.showNum = true;
+            this.wait_timer = 10;
+            var that = this;
+            var timer_interval = setInterval(function () {
+              if (that.wait_timer > 0) {
+                that.wait_timer--;
+              } else {
+                clearInterval(timer_interval);
+              }
+            }, 1000);
+            //在這裡調取你獲取驗證碼的ajax
+          },
+          getCodeText: function () {
+            if (this.wait_timer > 0) {
+              return "已傳送";
+            }
+
+            if (this.wait_timer === 0) {
+              this.showNum = false;
+              return "重新發送驗證碼！";
+            }
+            if (this.wait_timer === false) {
+              return "傳送驗證碼！";
+            }
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

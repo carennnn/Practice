@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="/crypto-js-4.0.0.min.js"></script>
+  </head>
+  <body>
+    <script>
+      //SHA256加密
+      var obj = {
+        SrcID: "4620000",
+        KeyID: "B0462V1",
+        STAN: "0000008189",
+        TxnDatetime: "20190122135748",
+        OrigTxnDatetime: "20190122135727",
+        OrigSTAN: "0000008188",
+      };
+      function get_sha256(data) {
+        data = JSON.stringify(data); //先轉成字串
+        console.log(data);
+        var sha256 = CryptoJS.SHA256(data).toString(CryptoJS.enc.Hex); //加密
+        console.log(sha256);
+        return sha256;
+      }
+      get_sha256(obj);
+
+      //3DES ECB Mode加密
+      function encryptDes_ECB(data, key) {
+        //加解密的key只要用同一種格式，就能得到相同答案，因此utf8換成hex或base64也可以
+        var KeyHex = CryptoJS.enc.Utf8.parse(key); //十六進位制
+        console.log(KeyHex);
+        var encrypt = CryptoJS.TripleDES.encrypt(data, KeyHex, {
+          mode: CryptoJS.mode.ECB, // ecb 不用 iv
+          padding: CryptoJS.pad.Pkcs7,
+        }).ciphertext.toString(); //原本是Base64格式，ciphertext之後回傳HEX格式
+        console.log(encrypt);
+        return encrypt;
+      }
+      encryptDes_ECB(
+        "0911001",
+        "E55AE4F0F82B4F7A1302927172B7746EC932B7E549022D21"
+      );
+      //3DES ECB Mode解密
+      function decryptDes_ECB(hexStr, key) {
+        //跟加密同一把鑰匙
+        var KeyHex = CryptoJS.enc.Utf8.parse(key);
+        hexStr = CryptoJS.enc.Hex.parse(hexStr); //hex格式
+        var base64str = CryptoJS.enc.Base64.stringify(hexStr); //變回Base64格式
+        var decrypt = CryptoJS.TripleDES.decrypt(base64str, KeyHex, {
+          mode: CryptoJS.mode.ECB,
+          padding: CryptoJS.pad.Pkcs7,
+        }).toString(CryptoJS.enc.Utf8);
+        console.log(decrypt);
+        return decrypt;
+      }
+      decryptDes_ECB(
+        "42c78a2c90cda688",
+        "E55AE4F0F82B4F7A1302927172B7746EC932B7E549022D21"
+      );
+
+      //辰彥版本
+      var tool = {
+        en3DesECB: function (string, key) {
+          // 使用欄位CustIdnBan、CustBillerAcnt、CustBankAcnt
+          var KeyHex = CryptoJS.enc.Utf8.parse(key);
+          var encrypted = CryptoJS.TripleDES.encrypt(string, KeyHex, {
+            mode: CryptoJS.mode.ECB, // ecb 不用 iv
+            padding: CryptoJS.pad.Pkcs7,
+          });
+          return encrypted.ciphertext.toString(); //回傳HEX
+        },
+        de3DesECB: function (hexStr, key) {
+          // 驗證用
+          var KeyHex = CryptoJS.enc.Utf8.parse(key);
+          var WordArray = CryptoJS.enc.Hex.parse(hexStr);
+          var base64str = CryptoJS.enc.Base64.stringify(WordArray);
+          var decrypted = CryptoJS.TripleDES.decrypt(base64str, KeyHex, {
+            mode: CryptoJS.mode.ECB, //ecb 不用 iv
+            padding: CryptoJS.pad.Pkcs7,
+          });
+          return decrypted.toString(CryptoJS.enc.Utf8);
+        },
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.0/jquery.js"
+      integrity="sha512-AlKVbNpELTf5qncqdAbq9S5CqGfvwq6rssK7s7ot/0lB/y5I/NOV/W/l6gJ6Gya4Fuhs1V0WuVLwAXu5+gMsSw=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div>
+      <p>只能輸入英文1~10碼</p>
+      <input id="en" type="text" />
+      <button id="enbtn">驗證</button>
+    </div>
+    <div>
+      <p>只能輸入數字1~10碼</p>
+      <input id="num" type="text" />
+      <button id="numbtn">驗證</button>
+    </div>
+    <script>
+      function verify(typeIn) {
+        // console.log(typeIn);
+        // console.log(typeIn[0].id);
+        if (typeIn[0].id == "en") {
+          console.log("HI");
+        }
+        if (typeIn[0].id == "num") {
+          console.log("HI");
+        }
+      }
+      $("#enbtn").click(function () {
+        // var a = /[a-z]/;
+        verify($("#en"));
+      });
+      $("#numbtn").click(function () {
+        // var a = /[a-z]/;
+        verify($("#num"));
+      });
+    </script>
+  </body>
+</html>

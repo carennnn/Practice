@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="jquery-3.6.0.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="num"></div>
+    <button>添加</button>
+    <script>
+      // var ar = [45,'t',function(){
+      //     // alert(5)
+      // }]
+      // console.log()
+      // ar[2]()
+      // var ar1 =[ 45,["abby","melody"]]
+      // console.log(ar1[1][1])
+      // $(".num").text(ar1[1][1])
+
+      let name = ["Abby", "Melody", "Julia", "Sandy"];
+      name.copyWithin(2, 1);
+      console.log(name); //複製元素 .copyWithin(要替換的元素索引值,要複製的元素)
+
+      name.fill("Amy", 1);
+      console.log(name); //用指定的值去替換所有的元素 .fill(替換的內容,起始位置)
+
+      console.log(name.pop()); //取出並刪除最後一個元素
+      console.log(name); //刪除元素後的新陣列
+
+      console.log(name.shift()); //取出並刪除第一個元素
+      console.log(name); //刪除元素後的新陣列
+
+      name.push("Julia", "Sandy");
+      console.log(name); //從最後方添加新的元素
+
+      name.unshift("Daniel", "Kevin");
+      console.log(name); //從最前方添加新的元素
+
+      let num = [12, 04, 91, 244, 861];
+      num.sort(function (a, b) {
+        //由小到大排序a-b
+        return a - b;
+      });
+      console.log(num);
+      num.sort(function (a, b) {
+        //由大到小排序b-a
+        return b - a;
+      });
+      console.log(num);
+
+      num.sort();
+      console.log(num); //根據字元的unicode排序
+
+      name.reverse();
+      console.log(name); //反轉陣列的元素順序
+
+      let sport = ["游泳", "跑步", "跳舞", "瑜珈", "健身"];
+      sport.splice(0, 2, "爬山", "籃球");
+      //修改陣列內容 .splice(要修改的元素索引值,修改的元素數量,替換進去的新元素) 若省略提換的新元素則只會單純刪除資料
+      console.log(sport);
+    </script>
+  </body>
+</html>

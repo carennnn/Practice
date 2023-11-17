@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.0/axios.min.js"></script>
+
+    <link rel="stylesheet" href="style_ajax.css" type="text/css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div>
+          <ul>
+            <li class="logo"><span>二手小舖</span></li>
+            <li class="link"><span>最新活動</span></li>
+            <li class="link"><span>商品分類</span></li>
+            <li class="link"><span>關於我們 </span></li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li><input class="search" type="text" placeholder="查詢" /></li>
+            <li><span>購物車</span></li>
+            <li><span>登入</span></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div id="container">
+      <div class="priceTag">總金額: ${{total}}</div>
+      <div class="product" v-for="(item,index) in list">
+        <img class="pic" id="pic" v-bind:src="item.thumbnailUrl" alt="" />
+        <div class="productName" id="productInfo">{{item.title}}</div>
+        <div class="price" id="productInfo">${{item.id}}</div>
+        <div class="btn">
+          <div class="add" @click="add(item),totalAmount">加入購物車</div>
+          <div class="remove" @click="remove(item),totalAmount">移除</div>
+        </div>
+      </div>
+    </div>
+    <footer></footer>
+    <script>
+      var showList = new Vue({
+        el: "#container",
+        data() {
+          return {
+            // imgUrl: "",
+            list: [],
+            cart: [],
+            total: 0,
+            apiUrl: "https://jsonplaceholder.typicode.com/",
+          };
+        },
+
+        methods: {
+          getAPI: function () {
+            var self = this;
+            // console.log(this);
+            axios.get(self.apiUrl + "photos").then(function (res) {
+              console.log(self);
+              console.log(this);
+              console.log(res);
+
+              // console.log(res.data[0].thumbnailUrl);
+              // self.imgUrl = res.data[0].thumbnailUrl);
+              // console.log(self.imgUrl);
+              self.list = res.data;
+            });
+          },
+          add: function (res) {
+            var self = this;
+            var flag = false;
+            if (self.cart.length == 0) {
+              self.cart.push(res);
+            } else {
+              self.cart.forEach(function (item) {
+                if (item.id !== res.id) {
+                  flag = true;
+                }
+                if (flag == true) {
+                  self.cart.push(res);
+                }
+              });
+            }
+            console.log(self.cart);
+            // 下面是神奇寫法，不知道為啥就成功了，好讚
+            //若購物車內已存在則不再添加
+            // var idx = self.cart.indexOf(res);
+            // if (idx == -1) {
+            //   self.cart.push(res);
+            // } else {
+            //   console.log("購物車內已存在");
+            // }
+
+            // // self.cart.push(res); //不論購物車內是否有此商品。都持續添加
+            // console.log(self.cart);
+          },
+          remove: function (res) {
+            var self = this;
+            var idx = self.cart.indexOf(res);
+            if (idx !== -1) {
+              self.cart.splice(idx, 1);
+            } else {
+              console.log("找不到");
+            }
+            console.log(self.cart);
+          },
+        },
+        computed: {
+          totalAmount: function () {
+            var self = this;
+            self.total = 0;
+            self.cart.forEach((item) => {
+              self.total += item.id;
+            });
+            console.log(self.total);
+          },
+        },
+        mounted() {
+          this.getAPI();
+        },
+      });
+    </script>
+  </body>
+</html>

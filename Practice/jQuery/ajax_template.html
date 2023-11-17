@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="style_ajax.css" type="text/css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div>
+          <ul>
+            <li class="logo"><a href="">二手小舖</a></li>
+            <li class="link"><a href="">最新活動</a></li>
+            <li class="link"><a href="">商品分類</a></li>
+            <li class="link"><a href="">關於我們 </a></li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li><input class="search" type="text" placeholder="查詢" /></li>
+            <li><a href="">購物車</a></li>
+            <li><a href="">登入</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div id="container">
+      <template>
+        <div class="product">
+          <img class="pic" id="pic" src="" alt="" />
+          <div class="productName" id="productInfo"></div>
+          <div class="price" id="productInfo"></div>
+        </div>
+      </template>
+    </div>
+    <footer></footer>
+  </body>
+  <script>
+    function showList() {
+      $.get("https://jsonplaceholder.typicode.com/photos", function (data) {
+        $.each(data, function (idx, value) {
+          var t = document.getElementsByTagName("template")[0];
+          var clone = t.content.cloneNode(true);
+          if (idx <= 10) {
+            document.getElementById("container").append(clone);
+            $(".pic").attr("class", "pic" + idx);
+            $(".pic" + idx).attr("src", value.thumbnailUrl);
+            $(".productName").attr("class", "productName" + idx);
+            $(".productName" + idx).text(value.title);
+            $(".price").attr("class", "price" + idx);
+            $(".price" + idx).text("$" + value.id);
+          } else {
+            return false;
+          }
+        });
+      });
+    }
+
+    showList();
+  </script>
+</html>

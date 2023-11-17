@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *,*::before,*::after{
+            box-sizing: border-box;
+            font-family:Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+        :root{
+            /*在全域裡建立變數 hue，那麼全部頁面都可以使用，
+            如果只建立在特定區域中，則只有那個選取器的本人及子層可以使用*/
+            --hue-neutral:200;
+            --hue-wrong:0;
+            --hue-correct:145;
+        }
+        body{
+            width: 100vw;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            --hue:var(--hue-neutral); /*再設一次變數，用來代進去bg-color*/
+            background-color: hsl(var(--hue),100%,20%);
+        }
+        body.correct{
+            --hue:var(--hue-correct)
+        }
+        body.wrong{
+            --hue:var(--hue-wrong)
+        }
+        #question{
+            font-size: 1.5rem;
+        }
+        .container{
+            width: 800px;
+            max-width: 80%;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px 2px;
+        }
+        .btn-grid{
+            display: grid;
+            grid-template-columns: repeat(2,auto);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .btn{
+            --hue:var(--hue-neutral);
+            background-color: hsl(var(--hue),30%,90%);
+            border: 1px solid hsl(var(--hue),30%,80%);
+            border-radius: 5px;
+            padding: 12px;
+        }
+        .btn:hover{
+            background-color: hsl(var(--hue),30%,80%);
+        }
+        .btn.correct{
+            --hue:var(--hue-correct)
+        }
+        .btn.wrong{
+            --hue:var(--hue-wrong)
+        }
+        .start-btn,.next-btn{
+            padding: 12px 40px;
+            border:none;
+        }
+        .controls{
+            display: flex;
+            justify-content: center;
+        }
+        .controls .btn{
+            background-color: hsl(var(--hue),60%,30%);
+            color:#fff;
+        }
+        .hide{
+            display:none
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="question-container" class="hide">
+            <div id="question">Question</div>
+            <div id="answer-btns" class="btn-grid">
+                
+            </div>
+        </div>
+        <div class="controls">
+            <button id="start-btn" class="start-btn btn">Start</button>
+            <button id="next-btn" class="next-btn btn hide">Next</button>
+        </div>
+    </div>
+    <script>
+        const startButton = document.getElementById("start-btn")
+        const questionContainer = document.getElementById("question-container")
+        const nextButton = document.getElementById("next-btn")
+        const questionContent = document.getElementById("question")
+        const answerBtnElement = document.getElementById("answer-btns")
+        let newQuestions, currentQuestionIndex
+
+        startButton.addEventListener('click',startGame)
+        nextButton.addEventListener("click",()=>{
+            currentQuestionIndex++
+            setNextQuestion()
+        })
+
+        function startGame(){
+            console.log("start")
+            startButton.classList.add("hide")
+            shuffleQuestions = questions.sort(()=> Math.random())
+            currentQuestionIndex = 0
+            questionContainer.classList.remove("hide")
+            setNextQuestion()
+        }
+        function setNextQuestion(){
+            resetState()
+            showQuestion(shuffleQuestions[currentQuestionIndex])
+        }
+        function showQuestion(question){
+            questionContent.innerText = question.question 
+            question.answers.forEach(answer => {
+                const button = document.createElement("button")
+                button.innerText = answer.text
+                button.classList.add("btn")
+                answerBtnElement.appendChild(button)
+                button.addEventListener("click",selectAnswer)
+                if(answer.correct){
+                    button.dataset.correct = answer.correct
+                }
+            });
+        }
+        function selectAnswer(answer){   
+            const selectBtn = answer.target
+            const correct = selectBtn.dataset.correct
+            setStatusClass(document.body,correct)
+            Array.from(answerBtnElement.children).forEach(button=>{
+                setStatusClass(button,button.dataset.correct)
+            })
+            if(shuffleQuestions.length > currentQuestionIndex +1){
+                nextButton.classList.remove("hide") 
+            } else {
+                startButton.innerText = "Restart"
+                startButton.classList.remove("hide") 
+            }
+        }
+        function setStatusClass(element,correct){
+            clearStatusClass(element)
+            if (correct) {
+                element.classList.add("correct")
+            } else {
+                element.classList.add("wrong")
+            }
+        }
+        function clearStatusClass(element){
+            element.classList.remove("correct")
+            element.classList.remove("wrong")
+        }
+        function resetState(){
+            clearStatusClass(document.body)
+            nextButton.classList.add("hide")
+            while(answerBtnElement.firstChild){
+                answerBtnElement.removeChild(answerBtnElement.firstChild)
+            }
+        }
+        const questions = [
+            {
+                question:"2 + 2 = ?",
+                answers:[
+                    {text:"1",correct:false},
+                    {text:"4",correct:true}
+                ]
+            },
+            {
+                question:"8 * 7 = ?",
+                answers:[
+                    {text:"36",correct:false},
+                    {text:"56",correct:true}
+                ]
+            }
+        ]
+    </script>
+</body>
+</html>

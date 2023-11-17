@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script data-main="js/config" src="require-2.3.6.js"></script>
+    <script>
+        alert("123")
+        require(['config'],function(){
+            //這邊的內容必須要等待config讀取完畢，才會開始執行
+            alert("456")
+        })
+    //data-main的內容是非同步執行，也就是讀取完require-2.3.6後程式碼會先往下執行
+    //印出123
+    //config讀取完畢
+    //印出456
+    </script>
+</body>
+</html>

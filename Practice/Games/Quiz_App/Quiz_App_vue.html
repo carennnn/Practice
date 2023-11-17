@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *,*::before,*::after{
+            box-sizing: border-box;
+            font-family:Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+        :root{
+            /*在全域裡建立變數 hue，那麼全部頁面都可以使用，
+            如果只建立在特定區域中，則只有那個選取器的本人及子層可以使用*/
+            --hue-neutral:200;
+            --hue-wrong:0;
+            --hue-correct:145;
+        }
+        body{
+            width: 100vw;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            --hue:var(--hue-neutral); /*再設一次變數，用來代進去bg-color*/
+            background-color: hsl(var(--hue),100%,20%);
+        }
+        .app{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .correct{
+            --hue:var(--hue-correct);
+            background-color: hsl(var(--hue),100%,20%);
+        }
+        .wrong{
+            --hue:var(--hue-wrong);
+            background-color: hsl(var(--hue),100%,20%);
+        }
+        .question{
+            font-size: 1.5rem;
+        }
+        .container{
+            width: 800px;
+            max-width: 80%;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px 2px;
+        }
+        .btn-grid{
+            display: grid;
+            grid-template-columns: repeat(2,auto);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .btn {
+            --hue:var(--hue-neutral);
+            background-color: hsl(var(--hue),30%,90%);
+            border: 1px solid hsl(var(--hue),30%,80%);
+            border-radius: 5px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+        .btn:hover{
+            background-color: hsl(var(--hue),30%,80%);
+        }
+        .answer{
+             --hue:var(--hue-neutral);
+            background-color: hsl(var(--hue),60%,60%);
+            border: 1px solid hsl(var(--hue),60%,60%);
+            border-radius: 5px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+        .answer.correct{
+            --hue:var(--hue-correct)
+        }
+        .answer.wrong{
+            --hue:var(--hue-wrong)
+        }
+        .start-btn,.next-btn{
+            padding: 12px 40px;
+            border:none;
+        }
+        .controls{
+            display: flex;
+            justify-content: center;
+        }
+        .controls .btn{
+            background-color: hsl(var(--hue),60%,30%);
+            color:#fff;
+        }
+        .hide{
+            display:none
+        }
+    </style>
+</head>
+<body>
+    <div id="app"  class="app" :class="bgColor" style="width: 100%; height:100%">
+        <div class="container">
+            <div id="question-container" :class="{'hide':hide}">
+                <div>
+                    <div id="question" class="question">{{questions[i].question}}</div>
+                    <div class="btn-grid">
+                        <button class="btn" v-if="!showAnswer" v-for="item in questions[i].answers" @click="selectAnswer($event)">{{item.text}}</button>
+                        <button class="answer" v-if="showAnswer" :class="item.correct? 'correct':'wrong'" v-for="item in questions[i].answers">{{item.text}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <button id="start-btn" class="start-btn btn" :class="{hide:!hide}" @click="startGame">Start</button>
+                <button id="next-btn" class="next-btn btn" :class="{hide:!next}" @click="nextQuestion">{{nextBtnName}}</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
+
+    <script>
+        new Vue({
+            el:"#app",
+            data () {
+                return {
+                    i:"0",
+                    hide:true,
+                    next:false,
+                    nextBtnName:"Next",
+                    showAnswer:false,
+                    getPoint:false,
+                    bgColor:"",
+                    questions:[
+                        {
+                            question:"2 + 2 = ?",
+                            answers:[
+                                {text:"1",correct:false},
+                                {text:"4",correct:true}
+                            ]
+                        },
+                        {
+                            question:"8 * 7 = ?",
+                            answers:[
+                                {text:"56",correct:true},
+                                {text:"36",correct:false}
+                            ]
+                        }
+                    ]
+                }
+            },
+            methods:{
+                startGame(){
+                    this.hide = false
+                },
+                selectAnswer(event){
+                    this.questions[this.i].answers.forEach(item => {
+                        if(item.text == event.target.innerHTML){
+                            //比對所點擊的答案和陣列中是否相符，相符則依據答案正確與否套用至背景色
+                            this.bgColor = item.correct? 'correct':'wrong'
+                        }
+                    });
+                    event.target.innerHTML
+                    this.showAnswer = true
+                    if(this.questions.length-1 > this.i ){
+                        this.showNextBtn()
+                        this.nextBtnName = "Next"
+                    } else {
+                        this.showNextBtn()
+                        this.nextBtnName = "Restart"
+                    }
+                },
+                showNextBtn(){
+                    this.next = true
+                },
+                nextQuestion(){
+                   this.showAnswer = false
+                   this.bgColor = ""
+                    if(this.questions.length -1 > this.i ){
+                        this.next = false
+                        this.i++
+                    } else {
+                        this.hide = true
+                        this.next = false
+                        this.i = 0
+                    }
+                }
+            },
+            computed:{},
+            mounted:{}
+        })
+    </script>
+</body>
+</html>

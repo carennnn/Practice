@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VueJs Tutorial</title>
+    <style>
+      #canvas {
+        width: 600px;
+        padding: 200px 20px;
+        margin: 50px 0;
+        text-align: center;
+        border: 1px solid #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="vuejs">
+      <h1>Event</h1>
+      <p>My age is {{age}}</p>
+      <button v-on:click="add(1)">Add 1 year</button
+      ><button v-on:click="minus(1)">Minus 1 Year</button
+      ><button v-on:dblclick="add(10)">Add 10 year</button
+      ><button v-on:dblclick="minus(10)">Minus 10 Year</button>
+      <div id="canvas" v-on:mousemove="updateXY">{{x}},{{y}}</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#vuejs",
+        data: {
+          age: 25,
+          x: 0,
+          y: 0,
+        },
+        methods: {
+          add: function (inc) {
+            this.age += inc;
+          },
+          minus: function (dec) {
+            this.age -= dec;
+          },
+          updateXY: function (event) {
+            this.x = event.offsetX;
+            this.y = event.offsetY;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

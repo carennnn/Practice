@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <p>只能輸入英文1~10碼</p>
+      <input id="en" type="text" />
+      <button id="enbtn">驗證</button>
+    </div>
+    <hr />
+    <div>
+      <p>只能輸入數字1~10碼</p>
+      <input id="num" type="text" />
+      <button id="numbtn">驗證</button>
+    </div>
+    <hr />
+    <div>
+      <p>輸入電話號碼</p>
+      <input id="phone" type="text" />
+      <button id="phonebtn">確認</button>
+      <div id="note"></div>
+    </div>
+    <hr />
+    <div>
+      <p>身分證字號</p>
+      <input id="cid" type="text" />
+      <button id="cidbtn">驗證</button>
+    </div>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+      function verify(typeIn) {
+        /*英文1-10碼*/
+        if (typeIn[0].id == "en") {
+          let regex = /[^a-z]/;
+          if (typeIn.val().length == 0) {
+            console.log("不可為空");
+            typeIn.css("border", "2px solid red");
+          } else if (typeIn.val().length > 10) {
+            console.log("不可超過10碼");
+            typeIn.css("border", "2px solid green");
+          } else if (regex.test(typeIn.val())) {
+            console.log("English Only");
+            typeIn.css("border", "2px solid yellow");
+          } else {
+            alert("正確");
+            typeIn.css("border", "");
+          }
+        }
+        /*數字1-10碼*/
+        if (typeIn[0].id == "num") {
+          // let typeIn = /[0-9]/;
+          if (typeIn.val().length == 0) {
+            console.log("不可為空");
+            typeIn.css("border", "2px solid red");
+          } else if (typeIn.val().length > 10) {
+            console.log("不可超過10碼");
+            typeIn.css("border", "2px solid green");
+          } else if (isNaN(typeIn.val())) {
+            console.log("Numbers Only");
+            typeIn.css("border", "2px solid yellow");
+          } else {
+            alert("正確");
+            typeIn.css("border", "");
+          }
+        }
+        // if (typeIn[0].id == "phone") {
+        //   // let typeIn = /[0-9]/;
+        //   let ele = typeIn.val();
+        //   if (typeIn.val().length == 0) {
+        //     console.log("不可為空");
+        //     typeIn.css("border", "2px solid red");
+        //   } else if (
+        //     isNaN(typeIn.val()) |
+        //     (ele.charCodeAt(0) != 48) |
+        //     (ele.charCodeAt(1) != 57)
+        //   ) {
+        //     console.log("格式不正確");
+        //     typeIn.css("border", "2px solid yellow");
+        //   } else if (typeIn.val().length != 10) {
+        //     console.log("請輸入10碼");
+        //     typeIn.css("border", "2px solid green");
+        //   } else {
+        //     alert("正確");
+        //     typeIn.css("border", "");
+        //   }
+        // }
+        /*電話號碼*/
+        if (typeIn[0].id == "phone") {
+          let regex = /^09\d{8}$/;
+          if (typeIn.val().length == 0) {
+            console.log("不可為空");
+            typeIn.css("border", "2px solid red");
+          } else if (regex.test(typeIn.val()) == false) {
+            $("#note")
+              .html("<p>格式不正確</p>")
+              .show()
+              .css({ color: "mediumseagreen", fontSize: "20px" });
+            typeIn.css("border", "2px solid pink");
+          } else {
+            alert("正確");
+            typeIn.css("border", "");
+          }
+        }
+      }
+      $("#enbtn").click(function () {
+        verify($("#en"));
+      });
+      $("#num").blur(function () {
+        verify($("#num"));
+      });
+      $("#phonebtn").click(function () {
+        verify($("#phone"));
+      });
+
+      /*身分證字號*/
+      $("#cid").blur(function verifyId(id) {
+        var id = $("#cid").val();
+        if ($("#cid").val().length != 10) {
+          console.log("長度不正確");
+          return false;
+        }
+        let countyCode = id.charCodeAt(0);
+        if ((countyCode < 65) | (countyCode > 90)) {
+          console.log("字首須為大寫英文");
+          return false;
+        }
+        let genderCode = id.charCodeAt(1);
+        if (genderCode != 49 && genderCode != 50) {
+          console.log("只能輸入1或2");
+          return false;
+        }
+        let serialCode = id.slice(2);
+        for (let i in serialCode) {
+          let s = serialCode.charCodeAt(i);
+          if ((s < 48) | (s > 57)) {
+            console.log("只能輸入數字");
+            return false;
+          }
+        }
+        let convert = "ABCDEFGHJKLMNPQRSTUVXYWZIO";
+        let weights = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1];
+        id = String(convert.indexOf(id[0]) + 10) + id.slice(1);
+        checkSum = 0;
+        for (let i = 0; i < id.length; i++) {
+          c = parseInt(id[i]);
+          w = weights[i];
+          checkSum += c * w;
+        }
+        if (checkSum % 10 == 0) {
+          console.log("Pass");
+        } else {
+          console.log("檢核碼錯誤");
+        }
+      });
+    </script>
+  </body>
+</html>

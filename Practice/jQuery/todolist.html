@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="jquery-3.6.0.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="title">
+      <h2>今日待辦事項</h2>
+      <p>2022年3月24日</p>
+    </div>
+
+    <div class="todolist">
+      <!-- <div class="todo">
+        <input type="checkbox" id="check" />
+        <label for="todo1" class="todo1"></label><span class="time"></span>
+      </div> -->
+    </div>
+    <div class="todo">
+      <input id="todo" type="text" placeholder="新增" />
+      <input type="text" id="time" type="text" placeholder="時間" />
+    </div>
+    <button>確認</button>
+
+    <script>
+      var todoList = [
+        {
+          todo: "寫作業",
+          time: "20:00",
+          flag: false,
+        },
+        {
+          todo: "做報告",
+          time: "21:00",
+          flag: false,
+        },
+        {
+          todo: "洗碗",
+          time: "22:00",
+          flag: false,
+        },
+      ];
+      showList();
+
+      // $("label.todo1").text(todoList[0]["todo"]);
+      // $(".time").text(todoList[0]["time"]);
+
+      // todoList.forEach(function (todoJson, idx) {
+      //   console.log(todoJson, idx);
+      //   $(".todolist").append(
+      //     '<div class="todo"><input type="checkbox" class="checkbox"  data-id="' +
+      //       idx +
+      //       '" /><label for="todo" class="todo_item">' +
+      //       todoJson["todo"] +
+      //       "</label><span>" +
+      //       todoJson["time"] +
+      //       "</span></div>"
+      //   );
+      // });
+
+      function showList() {
+        $(".todolist").empty();
+        todoList.forEach(function (todoJson, idx) {
+          console.log(todoJson);
+
+          if (todoJson.flag == true) {
+            $(".todolist").append(
+              '<div class="todo" style="text-decoration:line-through;"><input type="checkbox" class="checkbox" checked data-id="' +
+                idx +
+                '" /><label for="todo" class="todo_item">' +
+                todoJson["todo"] +
+                "</label><span>" +
+                todoJson["time"] +
+                "</span></div>"
+            );
+          } else {
+            $(".todolist").append(
+              '<div class="todo"><input type="checkbox" class="checkbox" data-id="' +
+                idx +
+                '" /><label for="todo" class="todo_item">' +
+                todoJson["todo"] +
+                "</label><span>" +
+                todoJson["time"] +
+                "</span></div>"
+            );
+          }
+        });
+      }
+      $(".todolist").on("click", "[type=checkbox]", function () {
+        console.log(this);
+        var todoListIdx = $(this).data("id");
+        console.log(todoListIdx);
+        console.log(todoList[todoListIdx]);
+        if (todoList[todoListIdx].flag == false) {
+          todoList[todoListIdx].flag = true;
+        } else {
+          todoList[todoListIdx].flag = false;
+        }
+        console.log(todoList[todoListIdx].flag);
+        showList();
+      });
+      // $("[type=checkbox]").click(function () {
+      //   console.log(this);
+      //   var todoListIdx = $(this).data("id");
+      //   console.log(todoListIdx);
+      //   console.log(todoList[todoListIdx]);
+      //   if (todoList[todoListIdx].flag == false) {
+      //     todoList[todoListIdx].flag = true;
+      //   } else {
+      //     todoList[todoListIdx].flag = false;
+      //   }
+      //   console.log(todoList[todoListIdx].flag);
+      //   showList();
+      // });
+
+      $("button").click(function () {
+        todoList.push({
+          todo: $("#todo").val(),
+          time: $("#time").val(),
+          flag: false,
+        });
+        $("#todo").val("");
+        $("#time").val("");
+        showList();
+      });
+    </script>
+  </body>
+</html>

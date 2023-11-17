@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.0/axios.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h4>匯率計算機</h4>
+      <p>1 日幣 = 0.269 台幣</p>
+      日幣 <input type="text" v-model.number="num1" /> = 台幣
+      <input type="text" v-model.number="num2" />
+      <span>{{value}}</span>
+    </div>
+
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data() {
+          return {
+            num1: "",
+            num2: "",
+          };
+        },
+        methods: {},
+        computed: {
+          value() {
+            return this.num1 * 0.269;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

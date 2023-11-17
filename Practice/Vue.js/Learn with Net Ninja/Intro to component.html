@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VueJs Tutorial</title>
+  </head>
+  <body>
+    <div>
+      <h2>Components</h2>
+      <div id="vueOne">
+        <h3>Vue App 1</h3>
+        <greeting></greeting>
+      </div>
+      <div id="vueTwo">
+        <h3>Vue App 2</h3>
+        <greeting></greeting>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+      // var data = { name: "John" };
+      //組件的特色是會獨立執行並維護其函式，以此例而言，點擊按鈕後僅更改該vue區域內指定的項目。
+      //然而如果有上方那行，則可以同時更改兩個vue區域內對應的項目。
+      Vue.component("greeting", {
+        template:
+          "<div><p>I am {{name}}.</p><button v-on:click='change'>Change Name</button></div>",
+        data: function () {
+          return { name: "John" }; //如果要一次更改兩處改寫成 return data
+        },
+        methods: {
+          change: function () {
+            this.name = "Tom";
+          },
+        },
+      });
+      new Vue({ el: "#vueOne" });
+      new Vue({ el: "#vueTwo" });
+    </script>
+  </body>
+</html>

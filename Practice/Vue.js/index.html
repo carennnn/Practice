@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <!-- 第一題
+    <div id="app-3">
+      <span v-if="seen">Now you see me</span>
+    </div> -->
+
+    <!-- 第二題
+    <div id="app-4">
+      <ol>
+        <li v-for="todo in todos">{{ todo.text }}</li>
+      </ol>
+    </div> -->
+
+    <!-- 第三題 
+    <div id="app-6">
+      <p>{{ message }}</p>
+      <p v-model="message"></p>
+    </div> -->
+
+    <!-- 第四題
+    <div id="app">
+      <ol>
+        <todo-item></todo-item>
+      </ol>
+    </div> -->
+
+    <!-- <div id="app-7">
+      <ol> -->
+    <!-- 現在我們為每個 todo-item 提供 todo 對象，
+        todo 對象是變量，即其内容可以是動態的。我们也需要為暪建提供一個key -->
+    <!-- <todo-item
+          v-for="item in groceryList"
+          v-bind:todo="item"
+          v-bind:key="item.id"
+        ></todo-item>
+      </ol>
+    </div> -->
+
+   
+    <div id="app01">
+      <div>{{img}}沒有圖片</div>
+      <div v-text="img">沒有圖片</div>
+      <div v-html="img">有圖片</div>
+      <input type="checkbox" v-bind:checked="select">暑假作業</input>
+      <input type="checkbox" :checked="number === 5">寒假作業</input>
+      <div><p>The button below has been clicked {{ counter }} times.</p>
+      <button v-on:click="add">Add</button></div>
+      <template v-if="status==='english'">
+        <p>A</p>
+        <p>B</p>
+        <p>C</p>
+      </template>
+      <template v-else-if="status==='chinese'">
+        <p>一</p>
+        <p>二</p>
+        <p>三</p>
+      </template>
+      <template v-else>不顯示</template>
+      <div>
+        <ul>
+          <li v-for="(brand,key) in brands" >{{brand.name}}>>>{{key}}</li>
+        </ul>
+      </div>
+      <input type="button" value= "點我" v-on:click = "Click(1,2)" >
+      <input type="button" value= "點我1" v-on:click = "Click1" >
+    </div>
+<div id="app">
+  <ul>
+    <li v-for="(item,index) in list" v-if="item.age > 0">
+      {{index+1}}-{{item.name}}年齡是{{item.age}}歲
+    </li>
+  </ul>
+  <template>
+    <li v-if='flag'><span @click='edit()'>點擊一下</span></li>
+    <input type="text" v-else @change='input()'>
+</template>
+
+</div>
+<script>
+  var arr = [{id:1},{id:2},{id:3}]
+  function isSame(str){
+    var flag = false
+    arr.forEach(function(item){
+        if(item.id==str){
+           flag = true
+        }
+    })
+    console.log(flag)
+}
+</script>
+
+    <script src="index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VueJs Tutorial</title>
+    <style>
+      span {
+        background-color: rgb(231, 231, 226);
+        padding: 10px 20px;
+        margin: 10px;
+        border-radius: 8px;
+        user-select: none;
+      }
+      .active {
+        background-color: rgb(72, 105, 134);
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="vue">
+      <h2>Dynamic CSS</h2>
+      <div>
+        <p>交通工具選擇</p>
+        <span
+          v-for="(item,index) in vehicle"
+          v-on:click="toggle(item)"
+          v-bind:class="{active:item.flag}"
+          >{{item.name}}</span
+        >
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#vue",
+        data: {
+          vehicle: [
+            {
+              name: "機車",
+              flag: false,
+            },
+            {
+              name: "汽車",
+              flag: false,
+            },
+            {
+              name: "火車",
+              flag: false,
+            },
+            {
+              name: "步行",
+              flag: false,
+            },
+            {
+              name: "公車",
+              flag: false,
+            },
+          ],
+        },
+        methods: {
+          toggle: function (res) {
+            var index = this.vehicle.indexOf(res);
+            this.vehicle.forEach((item, idx) => {
+              if (index == idx) {
+                item.flag = !item.flag;
+              }
+            });
+          },
+        },
+        computed: {},
+      });
+    </script>
+  </body>
+</html>
